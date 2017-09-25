@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="MapDirection">
+    <wb-module deploy-name="GoogleMapsWrapper">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src.main.java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
-        <property name="context-root" value="MapDirection"/>
-        <property name="java-output-path" value="/MapDirection/target/classes"/>
+        <property name="java-output-path" value="/GoogleMapsWrapper/target/classes"/>
+        <property name="context-root" value="GoogleMapsWrapper"/>
     </wb-module>
 </project-modules>

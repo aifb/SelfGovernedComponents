@@ -9,10 +9,10 @@
 		<rdf4j.version>2.2</rdf4j.version>
 		<lucene.version>5.0.0</lucene.version>
 		<jetty.version>9.2.21.v20170120</jetty.version>
-		
+
 		<jersey2.version>2.19</jersey2.version>
 		<jaxrs.version>2.0.1</jaxrs.version>
-		
+
 		<!-- <nxparser.group>org.semanticweb.yars</nxparser.group> <nxparser.version>2.3.3</nxparser.version> -->
 		<nxparser.group>com.github.nxparser.nxparser</nxparser.group>
 		<nxparser.version>3dd34fc0fd1843614112e02fa048ba6aff82faa5</nxparser.version>
@@ -33,6 +33,10 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
 				<version>3.5.1</version>
 
 			</plugin>
@@ -132,7 +136,7 @@
 			<version>${nxparser.version}</version>
 		</dependency>
 
-		
+
 
 
 		<dependency>
@@ -147,7 +151,7 @@
 			<version>2.6</version>
 		</dependency>
 
-		
+
 		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
 		<dependency>
 			<groupId>org.jsoup</groupId>
