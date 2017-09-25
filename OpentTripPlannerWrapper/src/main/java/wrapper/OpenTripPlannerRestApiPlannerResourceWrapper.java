@@ -34,6 +34,7 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.json.JSONObject;
+import org.openrdf.query.algebra.Str;
 import org.semanticweb.yars.nx.Literal;
 import org.semanticweb.yars.nx.Node;
 import org.semanticweb.yars.nx.Resource;
@@ -50,6 +51,9 @@ import org.semanticweb.yars.nx.namespace.XSD;
 @Path("/opt")
 public class OpenTripPlannerRestApiPlannerResourceWrapper {
 	@Context UriInfo uri;
+	
+	private String host = "aifb-ls3-vm1.aifb.kit.edu";
+	private String port = "8090";
 
 	static HashMap<String, Iterable<Node[]>> calls = new HashMap<String, Iterable<Node[]>>();
 	static int counter = 0;
@@ -85,7 +89,7 @@ public class OpenTripPlannerRestApiPlannerResourceWrapper {
 
 		//		String rdf = "<> <http://example.org/is> \"geo gps coding webservice\" ; "
 		//				+ " a <http://example.org/webservice> . ";
-		Node base = new Resource( "http://localhost" );
+		Node base = new Resource( uri.getBaseUri() + "opt/" );
 		graph.add( new Node[] {base, new Resource(RDFS.LABEL.getLabel()), new Literal("the OpenTourPlanner wrapper for Linked Data", XSD.STRING)} );
 		graph.add( new Node[] {base, new Resource(RDFS.SEEALSO.getLabel()), new Resource("http://dev.opentripplanner.org")} );
 
@@ -106,7 +110,7 @@ public class OpenTripPlannerRestApiPlannerResourceWrapper {
 	 */
 	@GET
 	@Path("{callId}")
-	public Response getRouteById( @PathParam("callId") int callId) {
+	public Response getRouteById( @PathParam("callId") String callId) {
 		
 		if (!calls.containsKey(callId)) 
 			return Response.status(404).build();
@@ -211,8 +215,10 @@ public class OpenTripPlannerRestApiPlannerResourceWrapper {
 
 		//String key = "AIzaSyCSx9yznKEXKIaTTnG0DsK0WyZATIh1SFg";
 		//http://aifb-ls3-vm1.aifb.kit.edu:8090/otp/routers/default/plan?fromPlace=49.01085,8.37416&toPlace=49.00612,8.39493&mode=CAR&walkSpeed=5&cutoffSec=4000
-		String httpCall = ("http://aifb-ls3-vm1.aifb.kit.edu:8090/otp/routers/default/plan?fromPlace=" + origin + "&toPlace="
-				+ destination + "&mode=CAR&walkSpeed=5&cutoffSec=4000");
+		String httpCall = ("http://" + host + ":" + port + "/otp/routers/default/plan"
+				+ "?fromPlace=" + origin 
+				+ "&toPlace=" + destination 
+				+ "&mode=CAR&walkSpeed=5&cutoffSec=4000");
 
 		System.out.println(httpCall);
 

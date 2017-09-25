@@ -17,6 +17,7 @@ import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
@@ -59,7 +60,7 @@ public class GoogleMapsWrapper {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String doGet() {
 
-		return "Hallo Welt";
+		return "Hello World, I am the GoogleMapsWrapper!";
 
 	}
 	
@@ -77,13 +78,39 @@ public class GoogleMapsWrapper {
 
 		//		String rdf = "<> <http://example.org/is> \"geo gps coding webservice\" ; "
 		//				+ " a <http://example.org/webservice> . ";
-		Node base = new Resource( "http://localhost" );
-		graph.add( new Node[] {base, new Resource("http://example.org/predicate"), new Literal("the wrapper", XSD.STRING)} );
+		Node base = new Resource( uri.getBaseUri() + "mapDir/" );
+		graph.add( new Node[] {base, new Resource("http://example.org/predicate"), new Literal("the GoogleMapsWrapper", XSD.STRING)} );
 
 
 		return Response.status(Response.Status.OK).entity(new GenericEntity<Iterable<Node[]>>( graph ) { }).build();
 	}
 
+	
+	
+	
+	
+	
+	
+	/**
+	 * 
+	 * 
+	 * @param callId
+	 * @return
+	 */
+	@GET
+	@Path("{callId}")
+	public Response getRouteById( @PathParam("callId") String callId) {
+		
+		if (!calls.containsKey(callId)) 
+			return Response.status(404).build();
+		
+		return Response.status(Response.Status.OK).entity(new GenericEntity<Iterable<Node[]>>( calls.get(callId) ) { }).build();
+	}
+	
+	
+	
+	
+	
 	
 	
 	/**

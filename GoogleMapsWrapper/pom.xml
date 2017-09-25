@@ -18,6 +18,8 @@
 		<nxparser.group>com.github.nxparser.nxparser</nxparser.group>
 		<nxparser.version>3dd34fc0fd1843614112e02fa048ba6aff82faa5</nxparser.version>
 		<!-- <nxparser.group>org.semanticweb.yars</nxparser.group> <nxparser.version>3.0.0-SNAPSHOT</nxparser.version> -->
+		
+		<failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
 
 
