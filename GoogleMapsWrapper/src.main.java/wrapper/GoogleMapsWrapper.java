@@ -41,7 +41,7 @@ import org.semanticweb.yars.nx.namespace.RDFS;
 import org.semanticweb.yars.nx.namespace.XSD;
 
 @Path("/mapDir")
-public class MapDirection {
+public class GoogleMapsWrapper {
 	@Context UriInfo uri;
 
 	static HashMap<String, Iterable<Node[]>> calls = new HashMap<String, Iterable<Node[]>>();
@@ -97,7 +97,7 @@ public class MapDirection {
 	 */
 	@POST
 	public Response doPost(@Context UriInfo uriinfo, Iterable<Node[]> input) throws UnsupportedOperationException, URISyntaxException, IOException {
-		MapDirection app = new MapDirection();
+		GoogleMapsWrapper app = new GoogleMapsWrapper();
 		List<Node[]> graph = null;
 		try {
 			graph = app.getDirections(input);
