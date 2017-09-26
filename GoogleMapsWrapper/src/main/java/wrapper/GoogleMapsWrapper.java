@@ -224,30 +224,23 @@ public class GoogleMapsWrapper {
 		context.put("text", "http://example.org/text#");
 		context.put("value", "http://example.org/value#");
 		context.put("end_address", "http://example.org/end_address#");
-		context.put("end_location", "http://example.org/end_location#");
 		context.put("lat", "http://example.org/lat#");
 		context.put("lng", "http://example.org/lng#");
 		context.put("start_address", "http://example.org/start_address#");
 		context.put("start_location", "http://example.org/start_location#");
 		context.put("steps", "http://example.org/steps#");
-		context.put("html_instructions", "http://example.org/html_instructions#");
 
 		JSONObject jsonStack = new JSONObject(data);
 
-		if (counter % 2 == 0) {
-			context.remove("http://example.org/html_instructions#");
-		} else {
-			context.remove("http://example.org/end_location#");
+		if ((counter % 2) == 0) {
+			context.put("html_instructions", "http://example.org/html_instructions#");
+		} 
+		else {
+			context.put("end_location", "http://example.org/end_location#");
 		}
 
 		// Add Context du the JSON Object
 		jsonStack.append("@context", context);
-
-		if (counter % 2 == 0) {
-			jsonStack.remove("http://example.org/html_instructions#");
-		} else {
-			jsonStack.remove("http://example.org/end_location#");
-		}
 
 		// Parse das JSON Object
 		InputStream in = new ByteArrayInputStream(jsonStack.toString().getBytes(StandardCharsets.UTF_8));
@@ -268,7 +261,7 @@ public class GoogleMapsWrapper {
 			
 		}
 		
-//			System.out.println(jsonStack.toString());
+			System.out.println(jsonStack.toString());
 
 		return graph;
 	}
