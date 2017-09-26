@@ -29,11 +29,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.json.JSONObject;
+import org.semanticweb.yars.nx.BNode;
 import org.semanticweb.yars.nx.Literal;
 import org.semanticweb.yars.nx.Node;
 import org.semanticweb.yars.nx.Resource;
@@ -43,7 +45,8 @@ import org.semanticweb.yars.nx.namespace.XSD;
 
 @Path("/mapDir")
 public class GoogleMapsWrapper {
-	@Context UriInfo uri;
+	@Context
+	UriInfo uri;
 
 	static HashMap<String, Iterable<Node[]>> calls = new HashMap<String, Iterable<Node[]>>();
 	static int counter = 0;
@@ -63,7 +66,7 @@ public class GoogleMapsWrapper {
 		return "Hello World, I am the GoogleMapsWrapper!";
 
 	}
-	
+
 	/**
 	 * 
 	 * returns basic descriptions on the wrapper root resource
@@ -76,21 +79,16 @@ public class GoogleMapsWrapper {
 	public Response doGetRdf() {
 		List<Node[]> graph = new ArrayList<Node[]>();
 
-		//		String rdf = "<> <http://example.org/is> \"geo gps coding webservice\" ; "
-		//				+ " a <http://example.org/webservice> . ";
-		Node base = new Resource( uri.getBaseUri() + "mapDir/" );
-		graph.add( new Node[] {base, new Resource("http://example.org/predicate"), new Literal("the GoogleMapsWrapper", XSD.STRING)} );
+		// String rdf = "<> <http://example.org/is> \"geo gps coding webservice\" ; "
+		// + " a <http://example.org/webservice> . ";
+		Node base = new Resource(uri.getBaseUri() + "mapDir/");
+		graph.add(new Node[] { base, new Resource("http://example.org/predicate"),
+				new Literal("the GoogleMapsWrapper", XSD.STRING) });
 
-
-		return Response.status(Response.Status.OK).entity(new GenericEntity<Iterable<Node[]>>( graph ) { }).build();
+		return Response.status(Response.Status.OK).entity(new GenericEntity<Iterable<Node[]>>(graph) {
+		}).build();
 	}
 
-	
-	
-	
-	
-	
-	
 	/**
 	 * 
 	 * 
@@ -99,20 +97,15 @@ public class GoogleMapsWrapper {
 	 */
 	@GET
 	@Path("{callId}")
-	public Response getRouteById( @PathParam("callId") String callId) {
-		
-		if (!calls.containsKey(callId)) 
+	public Response getRouteById(@PathParam("callId") String callId) {
+
+		if (!calls.containsKey(callId))
 			return Response.status(404).build();
-		
-		return Response.status(Response.Status.OK).entity(new GenericEntity<Iterable<Node[]>>( calls.get(callId) ) { }).build();
+
+		return Response.status(Response.Status.OK).entity(new GenericEntity<Iterable<Node[]>>(calls.get(callId)) {
+		}).build();
 	}
-	
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * creates a new call
 	 * 
@@ -123,7 +116,8 @@ public class GoogleMapsWrapper {
 	 * @throws URISyntaxException
 	 */
 	@POST
-	public Response doPost(@Context UriInfo uriinfo, Iterable<Node[]> input) throws UnsupportedOperationException, URISyntaxException, IOException {
+	public Response doPost(@Context UriInfo uriinfo, Iterable<Node[]> input)
+			throws UnsupportedOperationException, URISyntaxException, IOException {
 		GoogleMapsWrapper app = new GoogleMapsWrapper();
 		List<Node[]> graph = null;
 		try {
@@ -146,7 +140,7 @@ public class GoogleMapsWrapper {
 		}
 		counter++;
 		calls.put(String.valueOf(counter), graph);
-		
+
 		return Response.status(Response.Status.OK).entity(new GenericEntity<Iterable<Node[]>>(graph) {
 		}).build();
 	}
@@ -158,22 +152,22 @@ public class GoogleMapsWrapper {
 		// Status: hier alle informationen über Java zugreifbar
 		String origin = null;
 		String destination = null;
-		
+
 		List<Node[]> list = new ArrayList<Node[]>();
 		for (Node[] node1 : input) {
 			list.add(node1);
 		}
-		
+
 		for (Node[] node : list) {
-			
+
 			if (node[1].getLabel().toLowerCase().contains("destination")) {
 				String subject = node[2].getLabel();
 				String lat = null;
 				String lng = null;
-				for(Node[] node2 : list ) {
-					if(node2[0].getLabel().contains(subject)&&node2[1].getLabel().contains("lat")) {
+				for (Node[] node2 : list) {
+					if (node2[0].getLabel().contains(subject) && node2[1].getLabel().contains("lat")) {
 						lat = node2[2].getLabel();
-					}else if(node2[0].getLabel().contains(subject)&&node2[1].getLabel().contains("long")) {
+					} else if (node2[0].getLabel().contains(subject) && node2[1].getLabel().contains("long")) {
 						lng = node2[2].getLabel();
 					}
 				}
@@ -183,16 +177,16 @@ public class GoogleMapsWrapper {
 				String subject = node[2].getLabel();
 				String lat = null;
 				String lng = null;
-				for(Node[] node2 : list ) {
-					if(node2[0].getLabel().contains(subject)&&node2[1].getLabel().contains("lat")) {
+				for (Node[] node2 : list) {
+					if (node2[0].getLabel().contains(subject) && node2[1].getLabel().contains("lat")) {
 						lat = node2[2].getLabel();
-					}else if(node2[0].getLabel().contains(subject)&&node2[1].getLabel().contains("long")) {
+					} else if (node2[0].getLabel().contains(subject) && node2[1].getLabel().contains("long")) {
 						lng = node2[2].getLabel();
 					}
 				}
 				origin = lat + ",+" + lng;
 			}
-			
+
 		}
 
 		String key = "AIzaSyCSx9yznKEXKIaTTnG0DsK0WyZATIh1SFg";
@@ -240,18 +234,18 @@ public class GoogleMapsWrapper {
 
 		JSONObject jsonStack = new JSONObject(data);
 
-		if(counter % 2 == 0) {
+		if (counter % 2 == 0) {
 			context.remove("http://example.org/html_instructions#");
-		}else {
+		} else {
 			context.remove("http://example.org/end_location#");
 		}
 
 		// Add Context du the JSON Object
 		jsonStack.append("@context", context);
-		
-		if(counter % 2 == 0) {
+
+		if (counter % 2 == 0) {
 			jsonStack.remove("http://example.org/html_instructions#");
-		}else {
+		} else {
 			jsonStack.remove("http://example.org/end_location#");
 		}
 
@@ -263,14 +257,67 @@ public class GoogleMapsWrapper {
 
 		List<Node[]> graph = new ArrayList<Node[]>();
 
+		
+		
 		StmtIterator iterator = myModel.listStatements();
 		while (iterator.hasNext()) {
+			
 			Statement smt = iterator.next();
-			graph.add(new Node[] { new Literal(smt.getSubject().toString()), new Literal(smt.getPredicate().toString()), new Literal(smt.getObject().toString()) });
+			
+			graph.add( parseSemanticWebNodesFromJenaStatement(smt));
+			
 		}
-		System.out.println(jsonStack.toString());
+		
+//			System.out.println(jsonStack.toString());
 
 		return graph;
+	}
+
+	/**
+	 * converts a valid Jena Statement Object into a SemanticWeb Node[] triple.
+	 * 
+	 * @author sba
+	 * 
+	 * @param smt
+	 * @return a Node[] triple
+	 */
+	public Node[] parseSemanticWebNodesFromJenaStatement(Statement smt) {
+
+		Node subject;
+		if (smt.getSubject().isURIResource()) {
+			subject = new Resource(smt.getSubject().toString());
+		} else if (smt.getSubject().isResource()) {
+			subject = new BNode(smt.getSubject().toString());
+		} else {
+			throw new IllegalArgumentException("RDF subject node must be a resource (either an URI or a BlankNode).");
+		}
+
+		Resource predicate;
+		if (smt.getPredicate().isURIResource()) {
+			predicate = new Resource(smt.getPredicate().toString());
+		} else {
+			throw new IllegalArgumentException("RDF predicate node must be a URI.");
+		}
+
+		Node object;
+		if (smt.getObject().isURIResource()) {
+			object = new Resource(smt.getObject().toString());
+		} else if (smt.getObject().isResource()) {
+			object = new BNode(smt.getObject().toString());
+		} else if (smt.getObject().isLiteral()) {
+
+			org.apache.jena.rdf.model.Literal object_literal = smt.getObject().asLiteral();
+			RDFDatatype data_type = object_literal.getDatatype();
+			String value = object_literal.getValue().toString();
+
+			object = new Literal(value, new Resource(data_type.getURI()));
+
+		} else {
+			throw new IllegalArgumentException(
+					"RDF object node must be a resource (either an URI or a BlankNode) or a Literal.");
+		}
+
+		return new Node[] { subject, predicate, object };
 	}
 
 }
