@@ -11,7 +11,7 @@
 		<lucene.version>5.0.0</lucene.version>
 		<jetty.version>9.2.21.v20170120</jetty.version>
 
-		<jersey2.version>2.26-b03</jersey2.version>
+		<jersey2.version>2.19</jersey2.version>
 		<jaxrs.version>2.1</jaxrs.version>
 
 		<!-- <nxparser.group>org.semanticweb.yars</nxparser.group> <nxparser.version>2.3.3</nxparser.version> -->
@@ -40,6 +40,10 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+
+    <webXml>${basedir}/WebContent/WEB-INF/web.xml</webXml>
+    <warSourceDirectory>${basedir}/WebContent</warSourceDirectory>
+
 				</configuration>
 				<version>3.5.1</version>
 			</plugin>
