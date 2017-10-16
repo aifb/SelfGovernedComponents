@@ -40,10 +40,6 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
-
-    <webXml>${basedir}/WebContent/WEB-INF/web.xml</webXml>
-    <warSourceDirectory>${basedir}/WebContent</warSourceDirectory>
-
 				</configuration>
 				<version>3.5.1</version>
 			</plugin>
