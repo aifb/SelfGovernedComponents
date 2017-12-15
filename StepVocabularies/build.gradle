@@ -26,8 +26,6 @@ repositories {
  * Configuration
  */
 description = 'stepvocabularies'
-group = 'edu.kit.aifb.step'
-version = '0.0.1-SNAPSHOT'
 
 
 
