@@ -43,9 +43,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     
     
-    // 
-    compile 'org.openrdf.sesame:sesame-rio-api:2.7.13'
-    
-    //
-    compile 'org.semanticweb.yars:nxparser-api:2.+'
+
 }

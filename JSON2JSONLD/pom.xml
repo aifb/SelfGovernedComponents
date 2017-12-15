@@ -3,10 +3,25 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>JSON2JSONLD</artifactId>
 	<packaging>war</packaging>
+	
+	<parent>
+		<groupId>edu.kit.aifb.step</groupId>
+		<artifactId>SelfGovernedComponents</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 
 	<properties>
-
+		<nxparser.group>com.github.sebbader.nxparser</nxparser.group>
+		<nxparser.version>e7da345297</nxparser.version>
 	</properties>
+	
+	
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://www.jitpack.io</url>
+		</repository>
+	</repositories>
 
 
 	<build>
@@ -27,6 +42,25 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>2.17</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		
+		
 		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
 		<dependency>
 			<groupId>org.jsoup</groupId>
@@ -34,12 +68,13 @@
 			<version>1.8.3</version>
 		</dependency>
 
+
+
+		<dependency>
+			<groupId>${nxparser.group}</groupId>
+			<artifactId>nxparser-api</artifactId>
+			<version>${nxparser.version}</version>
+		</dependency>
 	</dependencies>
 	
-	
-	<parent>
-		<groupId>edu.kit.aifb.step</groupId>
-		<artifactId>SelfGovernedComponents</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
 </project>
