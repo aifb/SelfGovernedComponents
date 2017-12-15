@@ -22,6 +22,9 @@ public class STEP {
 	public static final Resource BayesNode;
 	public static final Resource VirtualResource;
 	public static final Resource FLSVisitourAPI;
+	public static final Resource JOB;
+	public static final Resource FieldManager;
+	
 	
 	public static final Resource hasWebService;
 	public static final Resource hasProgram;
@@ -54,6 +57,8 @@ public class STEP {
         BayesNode = new Resource(STEP.NAMESPACE + "BayesNode");
         VirtualResource = new Resource(STEP.NAMESPACE + "VirtualResource");
         FLSVisitourAPI = new Resource(STEP.NAMESPACE + "FLSVisitourAPI");
+        JOB = new Resource(STEP.NAMESPACE + "Job");
+        FieldManager = new Resource(STEP.NAMESPACE + "FieldManager");
         
         
         // Predicates:

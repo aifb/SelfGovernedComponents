@@ -67,6 +67,7 @@ public class HYDRA {
 	public static final Resource variableRepresentation;
 	public static final Resource view;
 	public static final Resource writeable;
+	public static final Resource statusCodes;
 
 	
 
@@ -122,6 +123,7 @@ public class HYDRA {
     	variableRepresentation = new Resource(HYDRA.NAMESPACE + "variableRepresentation");
     	view = new Resource(HYDRA.NAMESPACE + "view");
     	writeable = new Resource(HYDRA.NAMESPACE + "writeable");
+    	statusCodes = new Resource(HYDRA.NAMESPACE + "statusCodes");
     }
 
 }
