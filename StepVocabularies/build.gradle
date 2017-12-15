@@ -42,6 +42,9 @@ dependencies {
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:4.12'
     
-    
+    compile 'com.github.sebbader.nxparser:nxparser-model:e7da345297'
+
+
+	compile 'org.openrdf.sesame:sesame-model:2.7.13'
 
 }
