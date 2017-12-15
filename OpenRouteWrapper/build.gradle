@@ -42,5 +42,45 @@ dependencies {
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:4.12'
     
+	  // 
+    compile 'org.openrdf.sesame:sesame-rio-api:2.7.13'
+    
+    //
+    compile 'org.semanticweb.yars:nxparser-api:2.+'
+    
+    
+    compile('org.openrdf.sesame:sesame-sail-memory:4.1.2') { exclude group: 'org.slf4j', module: 'slf4j-api' }
+    
+    compile 'org.apache.jena:jena-arq:3.4.0'
 
+	//<!-- JAX-RS -->
+	compile 'javax.ws.rs:javax.ws.rs-api:2.0.1'
+		
+	//<!-- Jersey 2.19 -->
+	compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.19'
+	compile 'org.glassfish.jersey.core:jersey-server:2.19'
+	compile 'org.glassfish.jersey.core:jersey-client:2.19'
+
+
+	//<!-- NxParser -->
+	compile('com.github.sebbader.nxparser:nxparser-jax-rs:e7da345297') {
+	     exclude group: 'slf4j-log4j12', module: 'org.slf4j'
+	     exclude group: 'log4j', module: 'log4j'
+	     exclude group: 'org.slf4j', module: 'slf4j-api'
+	}
+
+	compile 'com.github.sebbader.nxparser:nxparser-parsers-external-jsonld-jsonld_java:e7da345297'
+	compile 'com.github.sebbader.nxparser:nxparser-utilities-nx:e7da345297'
+	compile 'com.github.sebbader.nxparser:nxparser-model-datatypes:e7da345297'
+	compile 'com.github.sebbader.nxparser:nxparser-cli:e7da345297'
+
+
+	compile 'org.json:json:20140107'
+		
+	//<!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
+	compile 'commons-lang:commons-lang:2.6'
+
+
+	//<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+	compile 'org.jsoup:jsoup:1.8.3'
 }
