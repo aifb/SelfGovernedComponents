@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -36,7 +37,7 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.json.JSONObject;
-
+import org.openrdf.query.algebra.evaluation.function.numeric.Rand;
 import org.semanticweb.yars.nx.BNode;
 import org.semanticweb.yars.nx.Literal;
 import org.semanticweb.yars.nx.Node;
@@ -59,6 +60,8 @@ public class GoogleMapsWrapper {
 
 	static HashMap<String, Iterable<Node[]>> calls = new HashMap<String, Iterable<Node[]>>();
 	static int counter = 0;
+	
+	private static final Random random = new Random(1l);
 
 	/**
 	 * 
@@ -94,7 +97,7 @@ public class GoogleMapsWrapper {
 
 		//		String rdf = "<> <http://example.org/is> \"geo gps coding webservice\" ; "
 		//				+ " a <http://example.org/webservice> . ";
-		Node base = new Resource( uri.getBaseUri() + "opt/" );
+		Node base = new Resource( uri.getBaseUri() + "mapDir/" );
 		graph.add( new Node[] {base, new Resource(RDFS.LABEL.getLabel()), new Literal("the OpenTourPlanner wrapper for Linked Data", XSD.STRING)} );
 		graph.add( new Node[] {base, new Resource(RDFS.SEEALSO.getLabel()), new Resource("http://dev.opentripplanner.org")} );
 
@@ -119,10 +122,10 @@ public class GoogleMapsWrapper {
 		
 		if (!calls.containsKey(callId)) 
 			return Response.status(404).build();
-		if ((counter++ % 2) == 0) {
+		if (random.nextBoolean()) {
 			return Response.status(Response.Status.OK).entity(new GenericEntity<Iterable<Node[]>>( calls.get("1") ) { }).build();
 		} else {
-			return Response.status(Response.Status.FORBIDDEN).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 	}
 	
@@ -161,13 +164,19 @@ public class GoogleMapsWrapper {
 	@Consumes({"application/ld+json", "text/turtle"})
 	public Response doPost(@Context UriInfo uriinfo, Iterable<Node[]> input) throws UnsupportedOperationException, URISyntaxException, IOException {
 		
+
+		if (random.nextBoolean()) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		
+		
 		GoogleMapsWrapper app = new GoogleMapsWrapper();
 		List<Node[]> graph = null;
 		
 		try {
 			
 			
-			graph = app.getDirections(input);
+			graph = app.getDirections(input, uriinfo);
 			
 			
 		} catch (NoSuchMethodException e) {
@@ -189,16 +198,17 @@ public class GoogleMapsWrapper {
 		
 		
 		counter++;
-		//calls.put(String.valueOf(counter), graph);
-		calls.put("1", graph);
 		
-		//return Response.status(Response.Status.CREATED).entity(new GenericEntity<Iterable<Node[]>>(graph) { }).header("Location", uri.getBaseUri() + "opt/" + counter).build();
-		return Response.status(Response.Status.CREATED).entity(new GenericEntity<Iterable<Node[]>>(graph) { }).header("Location", uri.getBaseUri() + "opt/1").build();
+		calls.put(String.valueOf(counter), graph);
+		//calls.put("1", graph);
+		
+		return Response.status(Response.Status.CREATED).entity(new GenericEntity<Iterable<Node[]>>(graph) { }).header("Location", uri.getBaseUri() + "mapDir/" + counter).build();
+		//return Response.status(Response.Status.CREATED).entity(new GenericEntity<Iterable<Node[]>>(graph) { }).header("Location", uri.getBaseUri() + "opt/1").build();
 	}
 
 	
 	
-	public List<Node[]> getDirections(Iterable<Node[]> input)
+	public List<Node[]> getDirections(Iterable<Node[]> input, UriInfo uriinfo)
 			throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, URISyntaxException, UnsupportedOperationException, IOException {
 
@@ -245,7 +255,7 @@ public class GoogleMapsWrapper {
 		String key = "AIzaSyCSx9yznKEXKIaTTnG0DsK0WyZATIh1SFg";
 
 		String httpCall = ("https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination="
-				+ destination + "&mode=transit&key=" + key);
+				+ destination + "&mode=driving&key=" + key);
 
 		System.out.println(httpCall);
 
@@ -315,6 +325,9 @@ public class GoogleMapsWrapper {
 		}
 		
 			System.out.println(jsonStack.toString());
+			
+			
+			graph.add(new Node[] { new Resource("#" + counter), new Resource("http://example.org/location"), new Resource(uriinfo.getBaseUri() + "mapDir/" + (counter+1) )  } );
 
 		return graph;
 	}
