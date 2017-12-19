@@ -1,8 +1,6 @@
 package edu.kit.aifb.step.vocabs;
 
 
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.ValueFactoryImpl;
 import org.semanticweb.yars.nx.Resource;
 
 
@@ -15,14 +13,17 @@ public class MEXCORE {
 	/** {@code dbo} **/
 	public static final String PREFIX = "mex-core";
 
-	public static final Resource MEMORY;
+	public static final Resource memory;
+
+	public static final Resource cpu;
 
 
 	static {
-		ValueFactory factory = ValueFactoryImpl.getInstance();
-
+		
 		// Properties:
-		MEMORY = new Resource(MEXCORE.NAMESPACE + "memory");
+		memory = new Resource(MEXCORE.NAMESPACE + "memory");
+		cpu = new Resource(MEXCORE.NAMESPACE + "cpu");
+		
 
 	}
 
