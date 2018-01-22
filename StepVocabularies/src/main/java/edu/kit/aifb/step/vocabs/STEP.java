@@ -28,6 +28,7 @@ public class STEP {
 	
 	public static final Resource hasWebService;
 	public static final Resource hasProgram;
+	public static final Resource hasQuery;
 	public static final Resource hasValue;
 	public static final Resource hasModel;
 	public static final Resource hasResult;
@@ -65,6 +66,7 @@ public class STEP {
         
         hasWebService = new Resource(STEP.NAMESPACE + "hasWebService");
         hasProgram = new Resource(STEP.NAMESPACE + "hasProgram");
+        hasQuery = new Resource(STEP.NAMESPACE + "hasQuery");
         hasValue = new Resource(STEP.NAMESPACE + "hasValue");
         hasModel = new Resource(STEP.NAMESPACE + "hasModel");
         hasOutput = new Resource(STEP.NAMESPACE + "hasOutput");

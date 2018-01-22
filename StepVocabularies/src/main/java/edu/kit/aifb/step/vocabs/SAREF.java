@@ -21,7 +21,7 @@ public class SAREF {
     public static final String PREFIX = "saref";
 
     // classes
-	//public static final Resource ApiDocumentation;
+	public static final Resource Actuator;
 
 	
 	// properties
@@ -32,10 +32,10 @@ public class SAREF {
 
 	
     static {
-        ValueFactory factory = ValueFactoryImpl.getInstance();
+        //ValueFactory factory = ValueFactoryImpl.getInstance();
         
         // Classes:
-    	//ApiDocumentation = new Resource(SAREF.NAMESPACE + "ApiDocumentation");
+        Actuator = new Resource(SAREF.NAMESPACE + "Actuator");
 
         
         // Predicates:
