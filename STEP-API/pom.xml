@@ -2,9 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>edu.kit.aifb.step</groupId>
 	<artifactId>step-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>step-api</name>
@@ -70,4 +68,9 @@
 			<version>${nxparser.version}</version>
 		</dependency>
 	</dependencies>
+	<parent>
+		<groupId>edu.kit.aifb.step</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<artifactId>SelfGovernedComponents</artifactId>
+	</parent>
 </project>
