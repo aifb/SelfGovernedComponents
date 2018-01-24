@@ -7,6 +7,14 @@
 
 	<name>step-api</name>
 	<url>http://maven.apache.org</url>
+	
+	
+	<parent>
+		<groupId>edu.kit.aifb.step</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<artifactId>SelfGovernedComponents</artifactId>
+	</parent>
+	
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -68,12 +76,6 @@
 			<version>${nxparser.version}</version>
 		</dependency>
 	</dependencies>
-	<parent>
-		<groupId>edu.kit.aifb.step</groupId>
-		<version>0.0.1-SNAPSHOT</version>
-		<artifactId>SelfGovernedComponents</artifactId>
-	</parent>
-	
 	
 	<build>
 		<plugins>
