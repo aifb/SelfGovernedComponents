@@ -39,7 +39,7 @@ public class SAREF {
 
         
         // Predicates:
-    	hasState = new Resource(SAREF.NAMESPACE + "hasState/");
+    	hasState = new Resource(SAREF.NAMESPACE + "hasState");
    
     }
 
