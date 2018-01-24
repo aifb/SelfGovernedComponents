@@ -37,7 +37,7 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.json.JSONObject;
-import org.openrdf.query.algebra.evaluation.function.numeric.Rand;
+//import org.openrdf.query.algebra.evaluation.function.numeric.Rand;
 import org.semanticweb.yars.nx.BNode;
 import org.semanticweb.yars.nx.Literal;
 import org.semanticweb.yars.nx.Node;
