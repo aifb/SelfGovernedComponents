@@ -16,7 +16,6 @@
   	<module>OpenRouteWrapper</module>
   	<module>OpentTripPlannerWrapper</module>
   	<module>StepVocabularies</module>
-  	
   	<module>STEP-API</module>
   </modules>
 </project>
