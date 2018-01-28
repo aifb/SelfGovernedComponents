@@ -21,6 +21,7 @@ public class STEP {
 	public static final Resource Target;
 	public static final Resource BayesNode;
 	public static final Resource VirtualResource;
+	public static final Resource VirtualResourceContainer;
 	public static final Resource FLSVisitourAPI;
 	public static final Resource JOB;
 	public static final Resource FieldManager;
@@ -57,6 +58,7 @@ public class STEP {
         Target = new Resource(STEP.NAMESPACE + "Target");
         BayesNode = new Resource(STEP.NAMESPACE + "BayesNode");
         VirtualResource = new Resource(STEP.NAMESPACE + "VirtualResource");
+        VirtualResourceContainer = new Resource(STEP.NAMESPACE + "VirtualResourceContainer");
         FLSVisitourAPI = new Resource(STEP.NAMESPACE + "FLSVisitourAPI");
         JOB = new Resource(STEP.NAMESPACE + "Job");
         FieldManager = new Resource(STEP.NAMESPACE + "FieldManager");
