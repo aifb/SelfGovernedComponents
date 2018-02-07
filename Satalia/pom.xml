@@ -6,7 +6,7 @@
 	<groupId>edu.kit.aifb.step</groupId>
 	<artifactId>satalia-wrapper</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	
+
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,8 +16,10 @@
 
 		<nxparser.group>com.github.sebbader.nxparser</nxparser.group>
 		<nxparser.version>-SNAPSHOT</nxparser.version>
+		
+		<step.group>com.github.aifb.SelfGovernedComponents</step.group>
 	</properties>
-	
+
 
 	<repositories>
 		<repository>
@@ -59,6 +61,12 @@
 			<version>${nxparser.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>${step.group}</groupId>
+			<artifactId>StepApi</artifactId>
+			<version>-SNAPSHOT</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
@@ -77,9 +85,9 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		
-		
-		
+
+
+
 		<dependency>
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-jaxrs</artifactId>
@@ -95,7 +103,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 	</dependencies>
 
 
