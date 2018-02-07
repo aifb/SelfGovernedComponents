@@ -18,5 +18,6 @@
   	<module>StepVocabularies</module>
   	
   	<module>StepApi</module>
+  	<module>StepUtils</module>
   </modules>
 </project>

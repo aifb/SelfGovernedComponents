@@ -63,8 +63,8 @@
 
 		<dependency>
 			<groupId>${step.group}</groupId>
-			<artifactId>StepApi</artifactId>
-			<version>-SNAPSHOT</version>
+			<artifactId>StepUtils</artifactId>
+			<version>ff54bd8d18</version>
 		</dependency>
 
 
