@@ -46,8 +46,6 @@ dependencies {
       // 
     compile 'org.openrdf.sesame:sesame-rio-api:2.7.13'
     
-    //
-    compile 'org.semanticweb.yars:nxparser-api:2.+'
     
     
     compile('org.openrdf.sesame:sesame-sail-memory:4.1.2') { exclude group: 'org.slf4j', module: 'slf4j-api' }
@@ -64,6 +62,7 @@ dependencies {
 
 
 	//<!-- NxParser -->
+    compile 'org.semanticweb.yars:nxparser-api:2.+'
 	compile('com.github.sebbader.nxparser:nxparser-jax-rs:e7da345297') {
 	     exclude group: 'slf4j-log4j12', module: 'org.slf4j'
 	     exclude group: 'log4j', module: 'log4j'
