@@ -1,0 +1,545 @@
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: SolveEngine API
+  description: The SolveEngine solves your problems using a number of algorithms distributed with kubernetes docker containers.
+  version: "v2"
+# the domain of the service
+host: solve.satalia.com
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /api/v2
+produces:
+  - application/json
+consumes: 
+  - application/json
+securityDefinitions:
+  ApiKeyAuth:
+    type: apiKey
+    name: Authorization
+    in: header  
+paths:
+  /jobs:
+    get:
+      summary: List users' jobs
+      operationId: GetJobs
+      description: |
+        The Jobs endpoint returns user submitted jobs.
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/Jobs'
+          examples:
+            application/json:
+              jobs:
+                - id: a12ef509292b967325151104be084e2c4287c000
+                  user_id: 4
+                  status: completed
+                  algorithm: LP
+                  submitted: '2017-05-26T15:44:54Z'
+                  started: '2017-05-26T15:44:56Z'
+                  finished: '2017-05-26T15:44:57Z'
+                  filenames: problem.lp
+                  used_time: 1
+              total: 1
+        401:
+          $ref: "#/responses/Unauthorized"
+        500:
+          $ref: '#/responses/ServerError'
+      parameters:
+        - name: page
+          description: Page number
+          in: query
+          required: false
+          type: integer
+          default: 1
+          format: int32
+        - name: per_page
+          description: Number of jobs per page
+          default: 15
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          required: false
+          type: string
+          default: "submitted"
+          description: |
+            Sort can take one of the following values:
+            - status
+            - started
+            - finished
+            - submitted
+        - name: Authorization
+          in: header
+          type: string
+          required: true
+          description: |
+            Authorization api-key token.
+
+            api-key [your API key]
+
+            api-key 2owaEksieD4lM97qFcPyVN/RgbytofGrC3+tmcK2AxY=
+      tags:
+        - Job
+    post:
+      summary: 'Create a new job for solving'
+      description: |
+        An endpoint for creating a job for solving, this does not start the job. In the options field the following values are accepted:
+        - translate: "target_format"
+
+        target_format is dependent on the input problem format. Currently, the following translations are supported:
+        - gmpl  -> lp
+        - gmpl  -> mps
+        - lp    -> mps
+        - cnf   -> lp
+        - mps   -> lp
+      operationId: Create
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/CreateJobResponse'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: "#/responses/Unauthorized"
+        500:
+          $ref: '#/responses/ServerError'
+
+      parameters:
+        - name: Request
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/CreateJobRequest'
+        - name: Authorization
+          in: header
+          type: string
+          required: true
+          description: |
+            Authorization api-key token.
+
+            api-key [your API key]
+
+            api-key 2owaEksieD4lM97qFcPyVN/RgbytofGrC3+tmcK2AxY=
+        - name: x-tracking-id
+          in: header
+          type: string
+          description: |
+            If you want that your job will be assigned to team, you have to add this team tracking id.
+
+            [your team tracking id]
+
+            0efda6e240cd6c31598f676b8a1cb4423fc04cf3
+      tags:
+        - Job
+  '/jobs/{id}/schedule':
+    post:
+      summary: Schedule a job for solving
+      description: |
+        This endpoint schedules a job for solving. To be started, a job has to have one of the following statuses:
+    
+          - completed
+          - failed
+          - stopped
+          - created
+          - timeout
+        
+      operationId: Schedule
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: 'Job scheduled'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+        500:
+          $ref: '#/responses/ServerError'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique 40 character job identifier
+          type: string
+        - name: Authorization
+          in: header
+          type: string
+          required: true
+          description: |
+            Authorization api-key token.
+
+            api-key [your API key]
+
+            api-key 2owaEksieD4lM97qFcPyVN/RgbytofGrC3+tmcK2AxY=
+      tags:
+        - Job
+  '/jobs/{id}/results':
+    get:
+      summary: Get job result files
+      operationId: GetResults
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/JobResult'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+        500:
+          $ref: '#/responses/ServerError'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: Unique 40 character job identifier
+        - name: Authorization
+          in: header
+          type: string
+          required: true
+          description: |
+            Authorization api-key token.
+
+            api-key [your API key]
+
+            api-key 2owaEksieD4lM97qFcPyVN/RgbytofGrC3+tmcK2AxY=
+      tags:
+        - Job
+  '/jobs/{id}/status':
+    get:
+      summary: View the job status
+      operationId: Status
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/Status'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+        500:
+          $ref: '#/responses/ServerError'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: Unique 40 character job identifier
+        - name: Authorization
+          in: header
+          type: string
+          required: true
+          description: |
+            Authorization api-key token.
+
+            api-key [your API key]
+
+            api-key 2owaEksieD4lM97qFcPyVN/RgbytofGrC3+tmcK2AxY=
+      tags:
+        - Job
+  '/jobs/{id}/stop':
+    delete:
+      summary: Stop a running job
+      description: |
+        This endpoint stops a running job. To be stopped, a job has to have one of the following statuses:
+        - started
+        
+      operationId: Stop
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: 'Job successfully stopped'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+        500:
+          $ref: '#/responses/ServerError'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: Unique 40 character job identifier
+        - name: Authorization
+          in: header
+          type: string
+          required: true
+          description: |
+            Authorization api-key token.
+
+            api-key [your API key]
+
+            api-key 2owaEksieD4lM97qFcPyVN/RgbytofGrC3+tmcK2AxY=
+      tags:
+        - Job
+  '/jobs/{id}':
+    delete:
+      summary: |
+        This endpoint deletes a non running job
+      description: |
+        This endpoint stops a running job. To be deleted, a job has to have one of the following statuses:
+        - completed
+        - failed
+        - stopped
+        - created
+        - timeout
+      operationId: Delete
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: 'Job successfully deleted'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+        500:
+          $ref: '#/responses/ServerError'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: Unique 40 character job identifier
+        - name: Authorization
+          in: header
+          type: string
+          required: true
+          description: |
+            Authorization api-key token.
+
+            api-key [your API key]
+
+            api-key 2owaEksieD4lM97qFcPyVN/RgbytofGrC3+tmcK2AxY=
+            
+      tags:
+        - Job
+responses:
+  BadRequest:
+    description: Bad request
+    schema:
+      $ref: '#/definitions/Error'
+    examples:
+      application/json:
+        code: 3
+        message: Invalid job ID
+  NotFound:
+    description: Resource not found
+    schema:
+      $ref: "#/definitions/Error"
+    examples:
+      application/json:
+        code: 5 
+        message: Job not found 
+  Unauthorized:
+    description: Unauthorized
+    schema:
+      $ref: "#/definitions/Error"
+    examples:
+      application/json:
+        code: 16
+        message: Unauthorized
+  ServerError:
+    description: Internal server error
+    schema:
+      $ref: "#/definitions/Error"
+    examples:
+      application/json:
+        code: 13
+        message: Internal Server Error
+
+definitions:
+  CreateJobRequest:
+    type: object
+    properties:
+      options:
+        type: object
+        additionalProperties:
+          type: string
+        title: Options
+        description: A map of job options
+      problems:
+        type: array
+        items:
+          $ref: '#/definitions/File'
+        title: Problems
+        description: A list of input files
+        example:
+          name: problem.mzn
+          data: Problem file content encoded in base64
+      datafiles:
+        type: array
+        items:
+          $ref: '#/definitions/File'
+        title: Data files
+        description: A list of data files
+        example:
+          name: data.dzn
+          data: Data file content encoded in base64
+      timeout:
+        type: integer
+        format: int32
+        title: Timeout
+        description: The timeout for the solver in seconds. Minimum value is 60. Default value is 900.
+
+  CreateJobResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        description: A unique 40 character job identifier
+        example: 1178c0e4c77fe6852797cfd1a0007dbf1669d0c1
+
+  Jobs:
+    type: object
+    properties:
+      jobs:
+        type: array
+        items:
+          $ref: '#/definitions/Job'
+      total:
+        type: integer
+        format: int32
+
+  Job:
+    type: object
+    properties:
+      id:
+        type: string
+        description: A unique 40 character job identifier
+      user_id:
+        type: integer
+        format: int32
+        description: User ID
+      status:
+        type: string
+        description: The status of the job
+        enum:
+        - translating
+        - started
+        - starting
+        - completed
+        - failed
+        - stopped
+        - unknown
+        - created
+        - timeout
+      algorithm:
+        type: string
+        description: The job algorithm
+      submitted:
+        type: string
+        format: date-time
+        description: Timestamp, when the job was submitted
+      started:
+        type: string
+        format: date-time
+        description: Timestamp, when the job was started
+      finished:
+        type: string
+        format: date-time
+        description: Timestamp, when the job was completed
+      filenames:
+        type: string
+        description: Filenames
+      used_time:
+        type: integer
+        format: int32
+        description: Amout of time used to solve the job, rounded up to the nearest second
+  
+  Status:
+    type: object
+    properties:
+      status:
+        type: string
+        description: The status of the job
+
+  File:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Filename
+      data:
+        type: string
+        format: base64
+        description: File content encoded in base64
+  
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: gRPC status code
+      message:
+        type: string
+        description: Error message
+ 
+  JobResult:
+    type: object
+    properties:
+      job_id:
+        type: string
+        title: Job ID
+      result:
+        $ref: '#/definitions/Result'
+ 
+  Result:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Status of the job
+      objective_value:
+        type: number
+        description: Objective value
+      variables:
+        type: array
+        items:
+          $ref: '#/definitions/Variable'
+        description: Variable list
+      raw_output:
+        type: string
+        description: The raw output from the solver (currently used for outputting MiniZinc)
+    title: Result
+  
+  Variable:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Name of the variable
+      value:
+        type: number
+        format: double
+    description: Value of the variable

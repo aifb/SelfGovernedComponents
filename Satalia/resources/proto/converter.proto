@@ -1,0 +1,24 @@
+syntax = "proto3";
+package solver.converter;
+
+option java_package = "com.satalia.solveengine.converter";
+option java_multiple_files = true;
+option go_package = "converter";
+
+// Solver output
+message Result {
+    // Status of the job
+    string status = 1;
+    // The objective value
+    oneof obj_value { double objective_value = 2 [json_name = "objective_value"]; }
+    // A list of variables
+    repeated Variable variables = 3;
+}
+
+// Variable is a single variable in the result
+message Variable {
+    // Variable name
+    string name = 1;
+    // Variable value
+    oneof val { double value = 2; }
+}

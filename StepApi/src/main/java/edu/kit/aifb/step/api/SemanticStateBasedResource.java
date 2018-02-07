@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.cli.MissingArgumentException;
 import org.apache.http.MethodNotSupportedException;
 import org.semanticweb.yars.nx.Node;
+import org.semanticweb.yars.nx.Resource;
 
 
 /**
@@ -29,13 +30,13 @@ public interface SemanticStateBasedResource {
 	 * 
 	 * @return all instances
 	 */
-	public List<SemanticStateBasedResource> contains() throws RemoteException;;
+	public List<Resource> contains() throws RemoteException;
 	 
 
 	/**
 	 * 
 	 * @return one instances
 	 */
-	public SemanticStateBasedResource retrieve(String id) throws RemoteException;;
+	public SemanticStateBasedResource retrieve(String id) throws RemoteException;
 
 }

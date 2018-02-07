@@ -1,0 +1,130 @@
+syntax = "proto3";
+package solver.jobs;
+
+option java_package = "com.satalia.solveengine.jobsvc";
+option java_multiple_files = true;
+option go_package = "jobsvc";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "converter.proto";
+
+// A service for creating new jobs with the solveEngine
+service Job {
+    // Create a new job for solving, it doesn't schedule the job
+    rpc Create (CreateJobRequest) returns (CreateJobResponse) { }
+
+    // View the job status
+    rpc Status(JobRequest) returns (JobStatus) { }
+
+    // List users' jobs
+    rpc GetJobs(ListRequest) returns (JobList) { }
+
+    // Schedule a job for solving
+    rpc Schedule(JobRequest) returns (google.protobuf.Empty) { }
+
+    // Get job result files
+    rpc GetResults(JobRequest) returns (ResultResponse) { }
+
+    // Stop a running job
+    rpc Stop(JobRequest) returns (google.protobuf.Empty) { }
+
+    // Delete job
+    rpc Delete(JobRequest) returns (google.protobuf.Empty) { }
+}
+
+// CreateJobRequest is sent when creating a new job
+// it contains a list of problems and a map of
+// solveEngine options.
+message CreateJobRequest {
+    // A map of SolveEngine configuration options
+    map<string,string> options = 1;
+    // A list of job inputs
+    repeated Problem problems = 2;
+    // The timeout for the solver in seconds (minimum=60)
+    int32 timeout = 3;
+    // A list of data files
+    repeated Problem datafiles = 4;
+}
+
+// Problem message represents a single problem file sent to the Create rpc
+message Problem {
+    // The name of the problem this has to include
+    // the file extension
+    string name = 1;
+    // The file content
+    bytes data = 2;
+}
+
+// ViewJobRequest message holds a job_id
+// and is used for any rpc that requires a job ID
+message JobRequest {
+	// The ID of the job we want to view
+    string id = 1;
+}
+
+// CreateJobResponse message is returned by the create rpc
+// it returns the job id
+message CreateJobResponse { 
+    // The ID of the newly created job
+	string id = 1;
+}
+
+// JobStatus is returned when by status rpc
+// it contains the status of the job
+message JobStatus {
+	// The job status
+	string status = 1;
+}
+
+// ListRequest
+message ListRequest {
+    // Optional page number
+    int32 page = 1;
+    // optional items per page
+    int32 per_page = 2 [json_name="per_page"];
+    string sort = 3;
+    int32 user_id = 4;
+}
+
+// A list of jobs
+message JobList {
+    // A list of jobs
+    repeated JobMessage jobs = 1; 
+    oneof total_obj { int32 total = 2; }
+}
+
+// A job message
+message JobMessage {
+    // User ID
+    int32 user_id = 1 [json_name="user_id"];
+    // Job ID
+    string id = 2;
+    // Job status
+    string status = 3;
+    // The job algorithm
+    string algorithm = 4;
+    // When submitted
+    google.protobuf.Timestamp submitted = 5;
+    // When started
+    google.protobuf.Timestamp started = 6;
+    // When finished
+    google.protobuf.Timestamp finished = 7;
+    // Filenames
+    string filenames = 8;
+    // Used time in seconds
+    oneof time { int32 used_time = 9 [json_name="used_time"]; }
+    // Data filenames
+    string data_filenames = 10 [json_name="data_filenames"];
+    // Timeout
+    int32 timeout = 11;
+}
+
+// ResultResponse is sent when user requests
+// for the job results
+message ResultResponse {
+    // Job ID
+    string job_id = 1 [json_name="job_id"];
+    // A result object
+    solver.converter.Result result = 2;
+}
