@@ -51,6 +51,8 @@ dependencies {
 	}
 
 	compile 'org.openrdf.sesame:sesame-model:2.7.13'
+	
+	compile 'org.openrdf.sesame:sesame-repository-api:2.7.13'
 
 
 
