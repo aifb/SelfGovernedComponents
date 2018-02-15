@@ -4,8 +4,8 @@ import org.openrdf.repository.RepositoryConnection;
 
 public abstract class AbstractSemanticStateBasedResource implements SemanticStateBasedResource {
 
-	private String baseUri;
-	private RepositoryConnection connection;
+	protected String baseUri;
+	protected RepositoryConnection connection;
 	
 	/**
 	 * 
