@@ -6,16 +6,16 @@ public abstract class AbstractSemanticStateBasedResource implements SemanticStat
 
 	protected String baseUri;
 	protected RepositoryConnection connection;
+	protected Object store;
 	
 	/**
 	 * 
-	 * @param objects: object_0 = base URI, object_1 = RepositoryConnection, ...
+	 * @param objects: 1 = base URI, 2 = RepositoryConnection, 3 = null or BinaryStore
 	 */
-	public AbstractSemanticStateBasedResource(Object... objects ) {
-		if (objects == null) return ;
-		if (objects.length > 0) baseUri = objects[0].toString();
-		if (objects.length > 1) connection = (RepositoryConnection) objects[1];
-		
+	public AbstractSemanticStateBasedResource( String baseUri, RepositoryConnection connection, Object store ) {
+		this.baseUri = baseUri;
+		this.connection = connection;
+		this.store = store;
 	}
 
 }
